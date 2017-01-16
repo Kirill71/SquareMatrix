@@ -9,7 +9,7 @@
 
 
 const size_t FIRST_MATRIX = 0;
-const size_t SECOND_MATRIX = 37; // сдвиг указателя для функции seekg для считывания  второй матрицы из файла.
+const size_t SECOND_MATRIX = 37; // Г±Г¤ГўГЁГЈ ГіГЄГ Г§Г ГІГҐГ«Гї Г¤Г«Гї ГґГіГ­ГЄГ¶ГЁГЁ seekg Г¤Г«Гї Г±Г·ГЁГІГ»ГўГ Г­ГЁГї  ГўГІГ®Г°Г®Г© Г¬Г ГІГ°ГЁГ¶Г» ГЁГ§ ГґГ Г©Г«Г .
 const char SPACE = ' ';
 
 class SquareMatrixController
@@ -62,7 +62,6 @@ void SquareMatrixController::read_to_file(const std::string& path, SquareMatrix<
 	if (seek)
 		read->seekg(seek);
 	(*read) >> val;
-	read->close();
 }
 
 template<typename T, size_t SIZE>
@@ -70,7 +69,6 @@ void SquareMatrixController::write_to_file(const SquareMatrix<T,SIZE>& val)
 {
 	auto write = std::make_unique<std::ofstream>("output.txt");
 	(*write) << val;
-	write->close();
 }
 
 template<typename T, size_t SIZE>
