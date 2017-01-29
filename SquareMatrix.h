@@ -37,7 +37,7 @@ SquareMatrix<T, SIZE>::SquareMatrix() :arr(SIZE)
 template<typename T, unsigned SIZE>
 SquareMatrix<T, SIZE>::~SquareMatrix()
 {
-	for (unsigned i{ 0 }; i < SIZE; ++i)
+	for (unsigned i (0); i < SIZE; ++i)
 		arr[i].~vector();
 	arr.~vector();
 }
@@ -47,14 +47,14 @@ SquareMatrix<T, SIZE>::SquareMatrix(const SquareMatrix<T, SIZE>&rhs) : SquareMat
 {
 	if (this != &rhs)
 	{
-		for (unsigned i{ 0 }; i < SIZE; ++i)
-			for (unsigned j{ 0 }; j < SIZE; ++j)
+		for (unsigned i (0); i < SIZE; ++i)
+			for (unsigned j (0); j < SIZE; ++j)
 				this->arr[i][j] = rhs.arr[i][j];
 	}
 }
 
 template<typename T, unsigned SIZE>
-SquareMatrix<T, SIZE> & SquareMatrix<T, SIZE>::operator = (const SquareMatrix<T, SIZE>& rhs)
+SquareMatrix<T, SIZE> & SquareMatrix<T, SIZE>::operator= (const SquareMatrix<T, SIZE>& rhs)
 {
 	if (this != &rhs)
 	{
@@ -65,14 +65,14 @@ SquareMatrix<T, SIZE> & SquareMatrix<T, SIZE>::operator = (const SquareMatrix<T,
 }
 
 template<typename T, unsigned SIZE>
-SquareMatrix<T, SIZE> SquareMatrix<T, SIZE>::operator * (const SquareMatrix<T, SIZE>& rhs)
+SquareMatrix<T, SIZE> SquareMatrix<T, SIZE>::operator* (const SquareMatrix<T, SIZE>& rhs)
 {
-	// «наю что дл€ матрицы 4’4 лучше все сделать без циклов, но решил оставить так потому что так компактнее и задача учебна€(соответсвенно быстродействее не основной показатель).
+	// «наю, что дл€ матрицы 4’4 лучше все сделать без циклов, но решил оставить так потому что так компактнее и задача учебна€(соответсвенно быстродействее не основной показатель).
 	SquareMatrix<T, SIZE> temp;
 
-	for (unsigned k{ 0 }; k < SIZE; ++k)
-		for (unsigned i{ 0 }; i < SIZE; ++i)
-			for (unsigned j{ 0 }; j < SIZE; ++j)
+	for (unsigned k (0); k < SIZE; ++k)
+		for (unsigned i (0); i < SIZE; ++i)
+			for (unsigned j (0); j < SIZE; ++j)
 				temp.arr[k][i] += this->arr[k][j] * rhs.arr[j][i];
 	return temp;
 }
@@ -101,9 +101,9 @@ std::vector<T>& SquareMatrix<T, SIZE>::operator[](unsigned index)
 template<typename T, unsigned SIZE>
 std::ostream & operator<<(std::ostream& lhs, const SquareMatrix<T, SIZE>& rhs)
 {
-	for (unsigned i{ 0 }; i < SIZE; ++i)
+	for (unsigned i (0); i < SIZE; ++i)
 	{
-		for (unsigned j{ 0 }; j < SIZE; ++j)
+		for (unsigned j (0); j < SIZE; ++j)
 			lhs << rhs.arr[i][j] << ' ';
 		lhs << std::endl;
 	}
@@ -113,8 +113,8 @@ std::ostream & operator<<(std::ostream& lhs, const SquareMatrix<T, SIZE>& rhs)
 template<typename T, unsigned SIZE >
 const std::istream & operator >> (std::istream&  lhs, SquareMatrix<T, SIZE>& rhs)
 {
-	for (unsigned i{ 0 }; i < SIZE; ++i)
-		for (unsigned j{ 0 }; j < SIZE; ++j)
+	for (unsigned i (0); i < SIZE; ++i)
+		for (unsigned j (0); j < SIZE; ++j)
 			lhs >> rhs.arr[i][j];
 	return lhs;
 }

@@ -14,10 +14,9 @@ int main()
 	SquareMatrixController::print(b);
 	std::cout << std::endl;
 	a *= b;
-	a = b;
 	SquareMatrixController::print(a);
 	SquareMatrixController::write_to_file(a);
 	std::cout << "program completed successfully." << std::endl;
-	system("pause");
+	_getch();
 	return 0;
 }
