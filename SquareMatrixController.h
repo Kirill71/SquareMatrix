@@ -7,7 +7,6 @@
 #include<time.h>
 #include"SquareMatrix.h"
 
-
 const unsigned FIRST_MATRIX = 0;
 const unsigned SECOND_MATRIX = 37; // сдвиг указателя для функции seekg для считывания  второй матрицы из файла.
 const char SPACE = ' ';
