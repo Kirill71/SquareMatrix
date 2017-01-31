@@ -118,4 +118,60 @@ const std::istream & operator >> (std::istream&  lhs, SquareMatrix<T, SIZE>& rhs
 			lhs >> rhs.arr[i][j];
 	return lhs;
 }
+//  char delete
+template< unsigned SIZE >
+class SquareMatrix<char, SIZE> {
+	SquareMatrix() = delete;
+	~SquareMatrix() = delete ;
+
+	SquareMatrix(const SquareMatrix<char, SIZE>&) = delete;
+	SquareMatrix<char, SIZE>& operator= (const SquareMatrix< char, SIZE>& rhs) = delete;
+};
+//  const char delete
+template< unsigned SIZE >
+class SquareMatrix<const char, SIZE> {
+	SquareMatrix() = delete;
+	~SquareMatrix() = delete;
+
+	SquareMatrix(const SquareMatrix<const char, SIZE>&) = delete;
+	SquareMatrix<const char, SIZE>& operator= (const SquareMatrix<const char, SIZE>& rhs) = delete;
+};
+//  char* delete
+template< unsigned SIZE >
+class SquareMatrix<char*, SIZE> {
+	SquareMatrix() = delete;
+	~SquareMatrix() = delete;
+
+	SquareMatrix(const SquareMatrix<char*, SIZE>&) = delete;
+	SquareMatrix<char*, SIZE>& operator= (const SquareMatrix< char*, SIZE>& rhs) = delete;
+};
+// const char* delete
+template< unsigned SIZE >
+class SquareMatrix<const char*, SIZE> {
+	SquareMatrix() = delete;
+	~SquareMatrix() = delete;
+
+	SquareMatrix(const SquareMatrix<const char*, SIZE>&) = delete;
+	SquareMatrix<const char*, SIZE>& operator= (const SquareMatrix<const char*, SIZE>& rhs) = delete;
+};
+// const std::string
+template< unsigned SIZE >
+class SquareMatrix<const std::string, SIZE> {
+	SquareMatrix() = delete;
+	~SquareMatrix() = delete;
+
+	SquareMatrix(const SquareMatrix<const std::string, SIZE>&) = delete;
+	SquareMatrix<const std::string, SIZE>& operator= (const SquareMatrix<const std::string, SIZE>& rhs) = delete;
+};
+// std::string
+template< unsigned SIZE >
+class SquareMatrix<std::string, SIZE> {
+	SquareMatrix() = delete;
+	~SquareMatrix() = delete;
+
+	SquareMatrix( SquareMatrix<const std::string, SIZE>&) = delete;
+	SquareMatrix<std::string, SIZE>& operator= (const SquareMatrix< std::string, SIZE>& rhs) = delete;
+};
+
+
 #endif // !SquareMatrix_H_
