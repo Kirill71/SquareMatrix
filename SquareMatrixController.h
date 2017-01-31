@@ -8,7 +8,7 @@
 #include"SquareMatrix.h"
 
 const unsigned FIRST_MATRIX = 0;
-const unsigned SECOND_MATRIX = 37; // сдвиг указателя для функции seekg для считывания  второй матрицы из файла.
+const unsigned SECOND_MATRIX = 37; // СЃРґРІРёРі СѓРєР°Р·Р°С‚РµР»СЏ РґР»СЏ С„СѓРЅРєС†РёРё seekg РґР»СЏ СЃС‡РёС‚С‹РІР°РЅРёСЏ  РІС‚РѕСЂРѕР№ РјР°С‚СЂРёС†С‹ РёР· С„Р°Р№Р»Р°.
 const char SPACE = ' ';
 
 class SquareMatrixController
