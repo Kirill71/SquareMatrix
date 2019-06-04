@@ -3,8 +3,9 @@
 
 #include<vector>
 #include<iostream>
+#include <algorithm>
 
-template<typename T = double, unsigned SIZE = 4>
+template<typename T = double, int SIZE = 4>
 class SquareMatrix
 {
 public:
@@ -18,79 +19,84 @@ public:
 	void  operator*= (const SquareMatrix<T,SIZE> & rhs);
 	const std::vector<T>& operator[] (unsigned index) const;
 	std::vector<T>& operator[] (unsigned index);
+	size_t size() const noexcept { return arr.size();}
 
 private:
 	std::vector<std::vector<T>> arr;
-	template <typename T2, unsigned SIZE> friend  std::ostream& operator << (std::ostream& lhs, const SquareMatrix<T2, SIZE>&rhs);
-	template <typename T2, unsigned SIZE> friend  const std::istream& operator >> (std::istream& lhs, SquareMatrix<T2, SIZE>& rhs);
+	template <typename T2, int SIZE2> friend  std::ostream& operator << (std::ostream& lhs, const SquareMatrix<T2, SIZE2>&rhs);
+	template <typename T2, int SIZE2> friend  const std::istream& operator >> (std::istream& lhs, SquareMatrix<T2, SIZE2>& rhs);
 };
 
-template<typename T, unsigned SIZE>
+template<typename T, int SIZE>
 SquareMatrix<T, SIZE>::SquareMatrix() :arr(SIZE)
 {
+    static_assert(std::is_arithmetic<T>(), "Arithmetic type required");
 	if (SIZE <= 0) 
 		throw std::invalid_argument("value of SquareMatrix size negative or zero.");
-	for (unsigned i{ 0 }; i < SIZE; ++i)
-		arr[i].resize(SIZE, 0);
+
+    std::for_each(arr.begin(), arr.end(),[](std::vector<T>& row)
+    {
+        row.resize(SIZE, 0);
+    });
 }
 
-template<typename T, unsigned SIZE>
+template<typename T, int SIZE>
 SquareMatrix<T, SIZE>::~SquareMatrix()
 {
-	for (unsigned i (0); i < SIZE; ++i)
-		arr[i].~vector();
-	arr.~vector();
+    std::for_each(arr.begin(), arr.end(), [](std::vector<T>& row){row.clear();});
+	arr.clear();
 }
 
-template<typename T, unsigned SIZE>
+template<typename T, int SIZE>
 SquareMatrix<T, SIZE>::SquareMatrix(const SquareMatrix<T, SIZE>&rhs) : SquareMatrix()
 {
+    static_assert(std::is_arithmetic<T>(), "Arithmetic type required");
 	if (this != &rhs)
 	{
-		for (unsigned i (0); i < SIZE; ++i)
-			for (unsigned j (0); j < SIZE; ++j)
-				this->arr[i][j] = rhs.arr[i][j];
+		for (uint32_t i (0); i < SIZE; ++i)
+			for (uint32_t j (0); j < SIZE; ++j)
+				arr[i][j] = rhs.arr[i][j];
 	}
 }
 
-template<typename T, unsigned SIZE>
+template<typename T, int SIZE>
 SquareMatrix<T, SIZE> & SquareMatrix<T, SIZE>::operator= (const SquareMatrix<T, SIZE>& rhs)
 {
+    static_assert(std::is_arithmetic<T>(), "Arithmetic type required");
 	if (this != &rhs)
 	{
-		this->~SquareMatrix();
 		new (this) SquareMatrix(rhs);
 	}
 	return *this;
 }
 
-template<typename T, unsigned SIZE>
+template<typename T, int SIZE>
 SquareMatrix<T, SIZE> SquareMatrix<T, SIZE>::operator* (const SquareMatrix<T, SIZE>& rhs)
 {
-	// «наю, что дл€ матрицы 4’4 лучше все сделать без циклов, но решил оставить так потому что так компактнее и задача учебна€(соответсвенно быстродействее не основной показатель).
 	SquareMatrix<T, SIZE> temp;
 
-	for (unsigned k (0); k < SIZE; ++k)
-		for (unsigned i (0); i < SIZE; ++i)
-			for (unsigned j (0); j < SIZE; ++j)
-				temp.arr[k][i] += this->arr[k][j] * rhs.arr[j][i];
+	for (uint32_t k (0); k < SIZE; ++k)
+		for (uint32_t i (0); i < SIZE; ++i)
+			for (uint32_t j (0); j < SIZE; ++j)
+				temp.arr[k][i] += arr[k][j] * rhs.arr[j][i];
+
 	return temp;
 }
 
-template<typename T, unsigned SIZE>
+template<typename T, int SIZE>
 void SquareMatrix<T, SIZE>::operator *= (const SquareMatrix<T, SIZE>& rhs)
 {
-	(*this) = (*this)*(rhs);
+	*this = *this * rhs;
 }
-template<typename T, unsigned SIZE>
-const std::vector<T>& SquareMatrix<T, SIZE>::operator[](unsigned index) const
+template<typename T, int SIZE>
+const std::vector<T>& SquareMatrix<T, SIZE>::operator[](uint32_t index) const
 {
-	if (index < 0 || index > SIZE) { throw std::out_of_range("Out of range exception"); _getch(); exit(-1); }
+	if (index < 0 || index > SIZE) { throw std::out_of_range("Out of range exception"); }
 	return arr[index];
 }
 
-template<typename T, unsigned SIZE>
-std::vector<T>& SquareMatrix<T, SIZE>::operator[](unsigned index)
+template<typename T, int SIZE>
+std::vector<T>& SquareMatrix<T, SIZE>::operator[](uint32_t index)
 {
 	return const_cast<std::vector<T>&>(
 		static_cast<const SquareMatrix<T, SIZE>& >(*this)
@@ -98,80 +104,24 @@ std::vector<T>& SquareMatrix<T, SIZE>::operator[](unsigned index)
 	);
 }
 
-template<typename T, unsigned SIZE>
+template<typename T, int SIZE>
 std::ostream & operator<<(std::ostream& lhs, const SquareMatrix<T, SIZE>& rhs)
 {
-	for (unsigned i (0); i < SIZE; ++i)
+	for (uint32_t i (0); i < SIZE; ++i)
 	{
-		for (unsigned j (0); j < SIZE; ++j)
+		for (uint32_t j (0); j < SIZE; ++j)
 			lhs << rhs.arr[i][j] << ' ';
 		lhs << std::endl;
 	}
 	return lhs;
 }
 
-template<typename T, unsigned SIZE >
+template<typename T, int SIZE >
 const std::istream & operator >> (std::istream&  lhs, SquareMatrix<T, SIZE>& rhs)
 {
-	for (unsigned i (0); i < SIZE; ++i)
-		for (unsigned j (0); j < SIZE; ++j)
+	for (uint32_t i (0); i < SIZE; ++i)
+		for (uint32_t j (0); j < SIZE; ++j)
 			lhs >> rhs.arr[i][j];
 	return lhs;
 }
-//  char delete
-template< unsigned SIZE >
-class SquareMatrix<char, SIZE> {
-	SquareMatrix() = delete;
-	~SquareMatrix() = delete ;
-
-	SquareMatrix(const SquareMatrix<char, SIZE>&) = delete;
-	SquareMatrix<char, SIZE>& operator= (const SquareMatrix< char, SIZE>& rhs) = delete;
-};
-//  const char delete
-template< unsigned SIZE >
-class SquareMatrix<const char, SIZE> {
-	SquareMatrix() = delete;
-	~SquareMatrix() = delete;
-
-	SquareMatrix(const SquareMatrix<const char, SIZE>&) = delete;
-	SquareMatrix<const char, SIZE>& operator= (const SquareMatrix<const char, SIZE>& rhs) = delete;
-};
-//  char* delete
-template< unsigned SIZE >
-class SquareMatrix<char*, SIZE> {
-	SquareMatrix() = delete;
-	~SquareMatrix() = delete;
-
-	SquareMatrix(const SquareMatrix<char*, SIZE>&) = delete;
-	SquareMatrix<char*, SIZE>& operator= (const SquareMatrix< char*, SIZE>& rhs) = delete;
-};
-// const char* delete
-template< unsigned SIZE >
-class SquareMatrix<const char*, SIZE> {
-	SquareMatrix() = delete;
-	~SquareMatrix() = delete;
-
-	SquareMatrix(const SquareMatrix<const char*, SIZE>&) = delete;
-	SquareMatrix<const char*, SIZE>& operator= (const SquareMatrix<const char*, SIZE>& rhs) = delete;
-};
-// const std::string
-template< unsigned SIZE >
-class SquareMatrix<const std::string, SIZE> {
-	SquareMatrix() = delete;
-	~SquareMatrix() = delete;
-
-	SquareMatrix(const SquareMatrix<const std::string, SIZE>&) = delete;
-	SquareMatrix<const std::string, SIZE>& operator= (const SquareMatrix<const std::string, SIZE>& rhs) = delete;
-};
-// std::string
-template< unsigned SIZE >
-class SquareMatrix<std::string, SIZE> {
-	SquareMatrix() = delete;
-	~SquareMatrix() = delete;
-
-	SquareMatrix( SquareMatrix<const std::string, SIZE>&) = delete;
-	SquareMatrix<std::string, SIZE>& operator= (const SquareMatrix< std::string, SIZE>& rhs) = delete;
-};
-
-
 #endif // !SquareMatrix_H_

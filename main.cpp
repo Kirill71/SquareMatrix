@@ -1,22 +1,26 @@
 #include"SquareMatrix.h"
 #include"SquareMatrixController.h"
 
-const std::string FILE_NAME = "input.txt";
-
 int main()
 {
-	SquareMatrix<int> a;
+    std::string PATH ="input.txt";
+    std::string OUTPUT_PATH = "output.txt";
+	SquareMatrix<int > a;
 	SquareMatrix<int> b;
-	SquareMatrixController::read_to_file(FILE_NAME, a, FIRST_MATRIX);
-	SquareMatrixController::read_to_file(FILE_NAME, b, SECOND_MATRIX);
-	SquareMatrixController::print(a);
+
+	#ifndef _WIN32
+	   PATH = "../" + PATH;
+	   OUTPUT_PATH = "../" + OUTPUT_PATH;
+    #endif
+	SquareMatrixController::read_from_file(PATH, a, FIRST_MATRIX);
+	SquareMatrixController::read_from_file(PATH, b, SECOND_MATRIX);
+	std::cout << a;
 	std::cout << std::endl;
-	SquareMatrixController::print(b);
+	std::cout << a;
 	std::cout << std::endl;
 	a *= b;
-	SquareMatrixController::print(a);
-	SquareMatrixController::write_to_file(a);
+	std::cout << a;
+	SquareMatrixController::write_to_file(OUTPUT_PATH, a);
 	std::cout << "program completed successfully." << std::endl;
-	_getch();
 	return 0;
 }
