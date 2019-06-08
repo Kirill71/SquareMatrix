@@ -3,20 +3,20 @@
 
 int main()
 {
-    std::string PATH ="input.txt";
-    std::string OUTPUT_PATH = "output.txt";
+    std::string PATH ="res/input.txt";
+    std::string OUTPUT_PATH = "res/output.txt";
 	SquareMatrix<int > a;
 	SquareMatrix<int> b;
 
 	#ifndef _WIN32
-	   PATH = "../" + PATH;
-	   OUTPUT_PATH = "../" + OUTPUT_PATH;
+	   PATH = "../../" + PATH;
+	   OUTPUT_PATH = "../../" + OUTPUT_PATH;
     #endif
 	SquareMatrixController::read_from_file(PATH, a, FIRST_MATRIX);
 	SquareMatrixController::read_from_file(PATH, b, SECOND_MATRIX);
 	std::cout << a;
 	std::cout << std::endl;
-	std::cout << a;
+	std::cout << b;
 	std::cout << std::endl;
 	a *= b;
 	std::cout << a;

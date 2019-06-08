@@ -4,6 +4,8 @@
 #include<vector>
 #include<iostream>
 #include <algorithm>
+#include <thread>
+#include <future>
 
 template<typename T = double, int SIZE = 4>
 class SquareMatrix
@@ -73,14 +75,16 @@ SquareMatrix<T, SIZE> & SquareMatrix<T, SIZE>::operator= (const SquareMatrix<T, 
 template<typename T, int SIZE>
 SquareMatrix<T, SIZE> SquareMatrix<T, SIZE>::operator* (const SquareMatrix<T, SIZE>& rhs)
 {
-	SquareMatrix<T, SIZE> temp;
+    auto multiple_async = [this, rhs]() {
+        SquareMatrix<T, SIZE> temp;
+        for (uint32_t k(0); k < SIZE; ++k)
+            for (uint32_t i(0); i < SIZE; ++i)
+                for (uint32_t j(0); j < SIZE; ++j)
+                    temp.arr[k][i] += arr[k][j] * rhs.arr[j][i];
 
-	for (uint32_t k (0); k < SIZE; ++k)
-		for (uint32_t i (0); i < SIZE; ++i)
-			for (uint32_t j (0); j < SIZE; ++j)
-				temp.arr[k][i] += arr[k][j] * rhs.arr[j][i];
-
-	return temp;
+        return temp;
+    };
+	return std::async(multiple_async).get();
 }
 
 template<typename T, int SIZE>
